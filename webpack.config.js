@@ -2,7 +2,7 @@ const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./src/index.js",
   devtool: "inline-source-map",
   devServer: {
@@ -27,7 +27,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "TODOOS",
+      title: "TODOOZ",
       filename: "index.html",
       template: "src/template.html",
     }),
