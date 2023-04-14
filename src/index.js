@@ -33,12 +33,12 @@ Functionality:
     - Each journal input should have a title, and date by the side, and up to 
       90 chars or so of the note itself visible
 */
+import { events } from "./events"
 import "./styles.css"
 import { utils } from "./utils.js"
 
 export const main = (() => {
   const projectContainer = document.getElementById("container")
-  //All these will be available in other js files via main.EXAMPLE
   const HEADER_ID = "header"
   const PROJECT_BODY_ID = "body"
   const NAV_ID = "nav"
@@ -57,7 +57,8 @@ export const main = (() => {
 
   const renderAllElements = () => {
     utils.addElement(document.getElementById(HEADER_ID), "Todooz", "logo")
-    utils.addElement(document.getElementById(FOOTER_ID), "Copyright @ChrisOlsen 2023", "footer")
+    utils.addElement(document.getElementById(HEADER_ID), "User's Name", "user-profile")
+    utils.addElement(document.getElementById(FOOTER_ID), "Copyright @ChrisOlsen 2023", "footer-content")
     utils.addElement(document.querySelector(".nav-item-container"), "Reminders", "nav-item")
     utils.addElement(document.querySelector(".nav-item-container"), "Journal", "nav-item")
     utils.addElement(document.querySelector(".nav-setting-container"), "Settings", "nav-item")
@@ -71,3 +72,4 @@ export const main = (() => {
 
 main.createSkeleton()
 main.renderAllElements()
+events.initiateListeners()
