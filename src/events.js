@@ -1,3 +1,5 @@
+import { local } from "./localSaves.js"
+
 export const events = (() => {
   const navItemClickStyle = () => {
     const items = document.querySelectorAll(".nav-item")
@@ -8,6 +10,7 @@ export const events = (() => {
             a.classList.remove("nav-active")
           }
           i.classList.add("nav-active")
+          localStorage.setItem("CURRENT_PAGE", i.textContent)
         })
       })
     })
