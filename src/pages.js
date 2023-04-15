@@ -4,18 +4,36 @@ import { main } from "./index.js"
 export const pages = (() => {
   const showSettings = () => {
     utils.removeAllChild(document.getElementById(main.PAGE_ID))
-    document.getElementById(main.PAGE_ID).classList = ""
-    document.getElementById(main.PAGE_ID).classList.add("settings")
-    utils.addElement(document.getElementById(main.PAGE_ID), "Settings", "settings-title")
+    utils.refreshDivClass(`#${main.PAGE_ID}`, "settings")
+    utils.addElement(document.getElementById(main.PAGE_ID), "Settings", "page-title")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
   }
 
   const showJournal = () => {
     utils.removeAllChild(document.getElementById(main.PAGE_ID))
-    document.getElementById(main.PAGE_ID).classList = ""
-    document.getElementById(main.PAGE_ID).classList.add("journal")
+    utils.refreshDivClass(`#${main.PAGE_ID}`, "journal")
+    utils.addElement(document.getElementById(main.PAGE_ID), "Journal", "page-title")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
   }
 
-  //show reminder
+  const showReminders = () => {
+    utils.removeAllChild(document.getElementById(main.PAGE_ID))
+    utils.refreshDivClass(`#${main.PAGE_ID}`, "reminders")
+    utils.addElement(document.getElementById(main.PAGE_ID), "Reminders", "page-title")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
+  }
 
-  return { showSettings, showJournal }
+  const showAboutUs = () => {
+    utils.removeAllChild(document.getElementById(main.PAGE_ID))
+    utils.refreshDivClass(`#${main.PAGE_ID}`, "about-us")
+    utils.addElement(document.getElementById(main.PAGE_ID), "About Us", "page-title")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
+  }
+
+  return {
+    showSettings,
+    showJournal,
+    showReminders,
+    showAboutUs,
+  }
 })()

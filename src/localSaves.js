@@ -16,7 +16,12 @@ export const local = (() => {
       case "Settings":
         pages.showSettings()
         break
-      //default: pages.showJournal()
+      case "Journal":
+        pages.showJournal()
+        break
+      case "Reminders":
+        pages.showReminders()
+        break
       //TODO update for all pages
     }
   }

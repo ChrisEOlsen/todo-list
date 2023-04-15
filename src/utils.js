@@ -34,10 +34,16 @@ export const utils = (() => {
     return found
   }
 
+  const refreshDivClass = (identifier, cssClass) => {
+    document.querySelector(identifier).classList = ""
+    document.querySelector(identifier).classList.add(cssClass)
+  }
+
   return {
     addStructure,
     addElement,
     removeAllChild,
     chooseNavItem,
+    refreshDivClass,
   }
 })()

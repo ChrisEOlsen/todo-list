@@ -3,6 +3,7 @@ import { utils } from "./utils.js"
 import { pages } from "./pages.js"
 
 export const events = (() => {
+  //NAVIGATION EVENTS
   const navItemClickStyle = () => {
     const items = document.querySelectorAll(".nav-item")
     items.forEach(i => {
@@ -17,25 +18,25 @@ export const events = (() => {
       })
     })
   }
-
-  const settingsClicked = () => {
-    const settings = utils.chooseNavItem("Settings")
-    settings.addEventListener("click", () => {
-      pages.showSettings()
-    })
+  const initiateNavButtons = () => {
+    const navEvent = (buttonContent, func) => {
+      const navItem = utils.chooseNavItem(buttonContent)
+      navItem.addEventListener("click", () => {
+        func()
+      })
+    }
+    navEvent("Settings", pages.showSettings)
+    navEvent("Journal", pages.showJournal)
+    navEvent("Reminders", pages.showReminders)
+    navEvent("About Us", pages.showAboutUs)
   }
-
-  const journalClicked = () => {
-    const journal = utils.chooseNavItem("Journal")
-    journal.addEventListener("click", () => {
-      pages.showJournal()
-    })
+  const initiateAllNavEvents = () => {
+    navItemClickStyle()
+    initiateNavButtons()
   }
 
   const initiateListeners = () => {
-    navItemClickStyle()
-    settingsClicked()
-    journalClicked()
+    initiateAllNavEvents()
   }
 
   return { initiateListeners }

@@ -37,7 +37,6 @@ import "./styles.css"
 import { utils } from "./utils.js"
 import { events } from "./events.js"
 import { local } from "./localSaves.js"
-import { pages } from "./pages.js"
 
 export const main = (() => {
   const projectContainer = document.getElementById("container")

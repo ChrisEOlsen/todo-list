@@ -93,12 +93,15 @@ body {
 }
 
 /*=====SETTINGS PAGE=======*/
-.settings-title {
+.page-title {
   color: black;
   font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 36px;
 }
-#page.settings {
+#page.settings,
+#page.journal,
+#page.reminders,
+#page.about-us {
   padding: 20px 30px 20px 30px;
 }
 
