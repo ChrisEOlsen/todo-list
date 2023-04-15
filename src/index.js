@@ -37,6 +37,7 @@ import "./styles.css"
 import { utils } from "./utils.js"
 import { events } from "./events.js"
 import { local } from "./localSaves.js"
+import { pages } from "./pages.js"
 
 export const main = (() => {
   const projectContainer = document.getElementById("container")
@@ -69,6 +70,12 @@ export const main = (() => {
   return {
     createSkeleton,
     createAllElements,
+    projectContainer,
+    HEADER_ID,
+    FOOTER_ID,
+    PROJECT_BODY_ID,
+    NAV_ID,
+    PAGE_ID,
   }
 })()
 

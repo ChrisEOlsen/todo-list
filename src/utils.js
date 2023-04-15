@@ -17,5 +17,27 @@ export const utils = (() => {
     container.appendChild(newElement)
   }
 
-  return { addStructure, addElement }
+  const removeAllChild = parent => {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild)
+    }
+  }
+
+  const chooseNavItem = name => {
+    const item = document.querySelectorAll(".nav-item")
+    let found = undefined
+    item.forEach(n => {
+      if (n.textContent == name) {
+        found = n
+      }
+    })
+    return found
+  }
+
+  return {
+    addStructure,
+    addElement,
+    removeAllChild,
+    chooseNavItem,
+  }
 })()

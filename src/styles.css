@@ -92,6 +92,16 @@ body {
   opacity: 1;
 }
 
+/*=====SETTINGS PAGE=======*/
+.settings-title {
+  color: black;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 36px;
+}
+#page.settings {
+  padding: 20px 30px 20px 30px;
+}
+
 /*=====FOOTER=======*/
 .footer-content {
   color: var(--header-text-color);

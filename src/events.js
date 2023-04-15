@@ -1,4 +1,6 @@
-import { local } from "./localSaves.js"
+import { main } from "./index.js"
+import { utils } from "./utils.js"
+import { pages } from "./pages.js"
 
 export const events = (() => {
   const navItemClickStyle = () => {
@@ -16,9 +18,25 @@ export const events = (() => {
     })
   }
 
-  const initiateListeners = () => {
-    navItemClickStyle()
+  const settingsClicked = () => {
+    const settings = utils.chooseNavItem("Settings")
+    settings.addEventListener("click", () => {
+      pages.showSettings()
+    })
   }
 
-  return { navItemClickStyle, initiateListeners }
+  const journalClicked = () => {
+    const journal = utils.chooseNavItem("Journal")
+    journal.addEventListener("click", () => {
+      pages.showJournal()
+    })
+  }
+
+  const initiateListeners = () => {
+    navItemClickStyle()
+    settingsClicked()
+    journalClicked()
+  }
+
+  return { initiateListeners }
 })()
