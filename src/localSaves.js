@@ -22,6 +22,9 @@ export const local = (() => {
       case "Reminders":
         pages.showReminders()
         break
+      case "About Us":
+        pages.showAboutUs()
+        break
       //TODO update for all pages
     }
   }

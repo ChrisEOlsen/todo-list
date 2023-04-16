@@ -7,6 +7,43 @@ export const pages = (() => {
     utils.refreshDivClass(`#${main.PAGE_ID}`, "settings")
     utils.addElement(document.getElementById(main.PAGE_ID), "Settings", "page-title")
     utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
+    utils.addStructure(document.getElementById("page-content-container"), "class", "color-container")
+    const colors = [
+      {
+        "#009688": "#B2DFDB", // Teal
+      },
+      {
+        "#2196F3": "#BBDEFB", // Blue
+      },
+      {
+        "#3F51B5": "#C5CAE9", // Indigo
+      },
+      {
+        "#F06292": "#F8BBD0", // Fuchsia
+      },
+      {
+        "#E91E63": "#F48FB1", // Rose
+      },
+      {
+        "#FF9800": "#FFE0B2", // Orange
+      },
+      {
+        "#FFEB3B": "#FFF9C4", // Yellow
+      },
+      {
+        "#9E9E9E": "#E0E0E0", // Stone
+      },
+    ]
+    for (let i = 0; i < 8; i++) {
+      utils.addStructure(document.querySelector(".color-container"), "class", "color-choice")
+    }
+    const colorChoices = document.querySelectorAll(".color-choice")
+    colorChoices.forEach((element, index) => {
+      const colorPair = colors[index]
+      const color600 = Object.keys(colorPair)[0]
+      const color100 = colorPair[color600]
+      element.style.backgroundImage = `linear-gradient(-45deg, ${color600}, ${color100})`
+    })
   }
 
   const showJournal = () => {
