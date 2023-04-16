@@ -1,3 +1,5 @@
+import Color from "color"
+
 export const utils = (() => {
   const addStructure = (container, identifierType, identifier) => {
     const newItem = document.createElement("div")
@@ -38,6 +40,24 @@ export const utils = (() => {
     document.querySelector(identifier).classList = ""
     document.querySelector(identifier).classList.add(cssClass)
   }
+  //settings colors
+  const updateColors = event => {
+    const element = event.target
+    const color600 = element.getAttribute("data-color600")
+    const color100 = element.getAttribute("data-color100")
+
+    //In between color for nav bar
+    const mixColors = (color1, color2, ratio) => {
+      const mixedColor = Color(color1).mix(Color(color2), ratio)
+      return mixedColor.hex()
+    }
+
+    const intermediateColor = mixColors(color600, color100, 0.5)
+
+    document.documentElement.style.setProperty("--header-color", color600)
+    document.documentElement.style.setProperty("--nav-color", intermediateColor)
+    document.documentElement.style.setProperty("--page-color", color100)
+  }
 
   return {
     addStructure,
@@ -45,5 +65,6 @@ export const utils = (() => {
     removeAllChild,
     chooseNavItem,
     refreshDivClass,
+    updateColors,
   }
 })()

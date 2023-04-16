@@ -1,5 +1,6 @@
 import { main } from "./index.js"
 import { utils } from "./utils.js"
+import { mixColors } from "./utils.js"
 import { pages } from "./pages.js"
 
 export const events = (() => {
@@ -35,8 +36,16 @@ export const events = (() => {
     initiateNavButtons()
   }
 
+  //Settings page
+  const settingsColorClicked = () => {
+    document.querySelectorAll(".color-choice").forEach(element => {
+      element.addEventListener("click", utils.updateColors)
+    })
+  }
+
   const initiateListeners = () => {
     initiateAllNavEvents()
+    settingsColorClicked()
   }
 
   return { initiateListeners }

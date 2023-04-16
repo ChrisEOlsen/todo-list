@@ -31,7 +31,7 @@ export const pages = (() => {
         "#FFEB3B": "#FFF9C4", // Yellow
       },
       {
-        "#9E9E9E": "#E0E0E0", // Stone
+        "#000000": "#D6D6D6", // Black
       },
     ]
     for (let i = 0; i < 8; i++) {
@@ -43,6 +43,8 @@ export const pages = (() => {
       const color600 = Object.keys(colorPair)[0]
       const color100 = colorPair[color600]
       element.style.backgroundImage = `linear-gradient(-45deg, ${color600}, ${color100})`
+      element.setAttribute("data-color600", color600)
+      element.setAttribute("data-color100", color100)
     })
   }
 
