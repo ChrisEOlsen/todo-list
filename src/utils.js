@@ -19,21 +19,11 @@ export const utils = (() => {
     container.appendChild(newElement)
   }
 
+  //Also gets rid of all eventListeners
   const removeAllChild = parent => {
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild)
     }
-  }
-
-  const chooseNavItem = name => {
-    const item = document.querySelectorAll(".nav-item")
-    let found = undefined
-    item.forEach(n => {
-      if (n.textContent == name) {
-        found = n
-      }
-    })
-    return found
   }
 
   const refreshDivClass = (identifier, cssClass) => {
@@ -41,8 +31,7 @@ export const utils = (() => {
     document.querySelector(identifier).classList.add(cssClass)
   }
   //settings colors
-  const updateColors = event => {
-    const element = event.target
+  const updateColors = element => {
     const color600 = element.getAttribute("data-color600")
     const color100 = element.getAttribute("data-color100")
 
@@ -57,13 +46,15 @@ export const utils = (() => {
     document.documentElement.style.setProperty("--header-color", color600)
     document.documentElement.style.setProperty("--nav-color", intermediateColor)
     document.documentElement.style.setProperty("--page-color", color100)
+    localStorage.setItem("COLOR_SCHEME_H", color600)
+    localStorage.setItem("COLOR_SCHEME_N", intermediateColor)
+    localStorage.setItem("COLOR_SCHEME_P", color100)
   }
 
   return {
     addStructure,
     addElement,
     removeAllChild,
-    chooseNavItem,
     refreshDivClass,
     updateColors,
   }

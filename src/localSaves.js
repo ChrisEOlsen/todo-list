@@ -25,14 +25,21 @@ export const local = (() => {
       case "About Us":
         pages.showAboutUs()
         break
-      //TODO update for all pages
+      default:
+        pages.showReminders()
     }
+  }
+  const loadCurrentColor = () => {
+    document.documentElement.style.setProperty("--header-color", localStorage.getItem("COLOR_SCHEME_H"))
+    document.documentElement.style.setProperty("--nav-color", localStorage.getItem("COLOR_SCHEME_N"))
+    document.documentElement.style.setProperty("--page-color", localStorage.getItem("COLOR_SCHEME_P"))
   }
 
   const callStyles = () => {
     styleCurrentPageButton()
     loadCurrentPage()
+    loadCurrentColor()
   }
 
-  return { callStyles }
+  return { callStyles, loadCurrentPage }
 })()

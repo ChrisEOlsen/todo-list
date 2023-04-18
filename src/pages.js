@@ -1,5 +1,9 @@
 import { utils } from "./utils.js"
 import { main } from "./index.js"
+import { events } from "./events.js"
+
+//NOTE: Each show* function is responsible for deleting all children and child elements,
+//and then re-initiating event listeners from events.js
 
 export const pages = (() => {
   const showSettings = () => {
@@ -7,7 +11,9 @@ export const pages = (() => {
     utils.refreshDivClass(`#${main.PAGE_ID}`, "settings")
     utils.addElement(document.getElementById(main.PAGE_ID), "Settings", "page-title")
     utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
-    utils.addStructure(document.getElementById("page-content-container"), "class", "color-container")
+    utils.addStructure(document.getElementById("page-content-container"), "class", "color-scheme-container")
+    utils.addElement(document.querySelector(".color-scheme-container"), "Color Scheme:", "color-scheme-title")
+    utils.addStructure(document.querySelector(".color-scheme-container"), "class", "color-container")
     const colors = [
       {
         "#009688": "#B2DFDB", // Teal
@@ -28,13 +34,13 @@ export const pages = (() => {
         "#FF9800": "#FFE0B2", // Orange
       },
       {
-        "#FFEB3B": "#FFF9C4", // Yellow
+        "#FFC107": "#FFECB3", // Amber
       },
       {
         "#000000": "#D6D6D6", // Black
       },
     ]
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < colors.length; i++) {
       utils.addStructure(document.querySelector(".color-container"), "class", "color-choice")
     }
     const colorChoices = document.querySelectorAll(".color-choice")

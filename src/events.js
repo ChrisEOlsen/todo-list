@@ -1,51 +1,46 @@
 import { main } from "./index.js"
 import { utils } from "./utils.js"
-import { mixColors } from "./utils.js"
-import { pages } from "./pages.js"
+import { local } from "./localSaves.js"
 
 export const events = (() => {
   //NAVIGATION EVENTS
-  const navItemClickStyle = () => {
-    const items = document.querySelectorAll(".nav-item")
-    items.forEach(i => {
-      i.addEventListener("click", () => {
-        items.forEach(a => {
-          if (a.classList == "nav-item nav-active") {
-            a.classList.remove("nav-active")
+  const initiateNavEvents = () => {
+    const nav = document.getElementById(main.NAV_ID)
+    nav.addEventListener("click", e => {
+      const targetElement = e.target
+
+      //Page button clicked
+      if (targetElement.classList.contains("nav-item")) {
+        const navItem = document.querySelectorAll(".nav-item")
+        navItem.forEach(n => {
+          if (n.classList.contains("nav-active")) {
+            n.classList.remove("nav-active")
           }
-          i.classList.add("nav-active")
-          localStorage.setItem("CURRENT_PAGE", i.textContent)
         })
-      })
+        targetElement.classList.add("nav-active")
+        localStorage.setItem("CURRENT_PAGE", targetElement.textContent)
+        local.loadCurrentPage()
+      }
     })
   }
-  const initiateNavButtons = () => {
-    const navEvent = (buttonContent, func) => {
-      const navItem = utils.chooseNavItem(buttonContent)
-      navItem.addEventListener("click", () => {
-        func()
-      })
-    }
-    navEvent("Settings", pages.showSettings)
-    navEvent("Journal", pages.showJournal)
-    navEvent("Reminders", pages.showReminders)
-    navEvent("About Us", pages.showAboutUs)
-  }
-  const initiateAllNavEvents = () => {
-    navItemClickStyle()
-    initiateNavButtons()
-  }
 
-  //Settings page
-  const settingsColorClicked = () => {
-    document.querySelectorAll(".color-choice").forEach(element => {
-      element.addEventListener("click", utils.updateColors)
+  //PAGE EVENTS
+  const initiatePageEvents = () => {
+    const page = document.getElementById(main.PAGE_ID)
+
+    page.addEventListener("click", event => {
+      const targetElement = event.target
+
+      //Color scheme clicked
+      if (targetElement.classList.contains("color-choice")) {
+        utils.updateColors(targetElement)
+      }
     })
   }
 
   const initiateListeners = () => {
-    initiateAllNavEvents()
-    settingsColorClicked()
+    initiateNavEvents()
+    initiatePageEvents()
   }
 
   return { initiateListeners }
