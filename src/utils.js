@@ -51,11 +51,157 @@ export const utils = (() => {
     localStorage.setItem("COLOR_SCHEME_P", color100)
   }
 
+  function createReminderBoxPrompt() {
+    const form = document.createElement("form")
+    form.id = "reminderForm"
+    form.className = "reminder-box-prompt"
+
+    // Title input
+    const titleInput = document.createElement("input")
+    titleInput.type = "text"
+    titleInput.name = "title"
+    titleInput.placeholder = "Title"
+    titleInput.className = "form-item"
+    form.appendChild(titleInput)
+
+    // Description input
+    const descriptionInput = document.createElement("textarea")
+    descriptionInput.name = "description"
+    descriptionInput.placeholder = "Description"
+    descriptionInput.className = "form-item"
+    form.appendChild(descriptionInput)
+
+    // Due date input
+    const dueDateLabel = document.createElement("label")
+    dueDateLabel.textContent = "Due date:"
+    const dueDateInput = document.createElement("input")
+    dueDateInput.type = "date"
+    dueDateInput.name = "dueDate"
+    dueDateInput.className = "form-item"
+    dueDateLabel.appendChild(dueDateInput)
+    form.appendChild(dueDateLabel)
+
+    // Priority input
+    const priorityContainer = document.createElement("div")
+    priorityContainer.className = "priority-container"
+    const priorityLabel = document.createElement("label")
+    priorityLabel.textContent = "Priority:"
+    const prioritySelect = document.createElement("select")
+    prioritySelect.name = "priority"
+    prioritySelect.className = "form-item"
+    const priorities = ["Red", "Yellow", "Green"]
+    priorities.forEach(priority => {
+      const option = document.createElement("option")
+      option.value = priority
+      option.textContent = priority
+      prioritySelect.appendChild(option)
+    })
+    priorityLabel.appendChild(prioritySelect)
+    priorityContainer.appendChild(priorityLabel)
+    form.appendChild(priorityContainer)
+
+    // Buttons
+    const buttonsDiv = document.createElement("div")
+    buttonsDiv.className = "form-item"
+    const cancelButton = document.createElement("button")
+    cancelButton.type = "button"
+    cancelButton.textContent = "Cancel"
+    cancelButton.onclick = () => form.remove() // Remove form when Cancel button is clicked
+    const confirmButton = document.createElement("button")
+    confirmButton.type = "submit"
+    confirmButton.textContent = "Confirm"
+    buttonsDiv.appendChild(cancelButton)
+    buttonsDiv.appendChild(confirmButton)
+    priorityContainer.appendChild(buttonsDiv)
+
+    return form
+  }
+
+  function reformatDateString(dateString) {
+    if (dateString == "") return
+    const [year, month, day] = dateString.split("-")
+    return `${month}/${day}/${year}`
+  }
+
+  function getTodaysDateFormatted() {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = ("0" + (today.getMonth() + 1)).slice(-2)
+    const day = ("0" + today.getDate()).slice(-2)
+
+    return `${month}/${day}/${year}`
+  }
+
+  const createReminder = (title, description, dueDate, priority) => {
+    // Create a div container with a class of 'reminder'
+    const reminderContainer = document.createElement("div")
+    reminderContainer.classList.add("reminder")
+
+    // Create a checkbox for task completion
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.classList.add("reminder-box-checkbox")
+
+    const reminderTextContainer = document.createElement("div")
+    reminderTextContainer.classList.add("reminder-text-container")
+
+    // Create a title element with a class of reminder-box-title
+    const reminderTitle = document.createElement("span")
+    reminderTitle.classList.add("reminder-box-title")
+    reminderTitle.textContent = title
+
+    // Create a description element with a class of reminder-box-description
+    const reminderDescription = document.createElement("span")
+    reminderDescription.classList.add("reminder-box-description")
+    reminderDescription.textContent = description
+
+    // Create a due date element with a class of reminder-box-due-date
+    const reminderDueDate = document.createElement("span")
+    reminderDueDate.classList.add("reminder-box-due-date")
+    reminderDueDate.textContent = dueDate
+
+    // Append the elements to the reminder container
+    reminderTextContainer.appendChild(checkbox)
+    reminderTextContainer.appendChild(reminderTitle)
+    reminderTextContainer.appendChild(reminderDescription)
+    reminderContainer.appendChild(reminderTextContainer)
+    reminderContainer.appendChild(reminderDueDate)
+
+    switch (priority) {
+      case "Red":
+        reminderContainer.style.borderRight = "4px solid red"
+        break
+      case "Yellow":
+        reminderContainer.style.borderRight = "4px solid yellow"
+        break
+      case "Green":
+        reminderContainer.style.borderRight = "4px solid green"
+        break
+    }
+    return reminderContainer
+  }
+
+  const toggleReminderDim = on => {
+    const reminder = document.querySelectorAll(".reminder")
+    reminder.forEach(r => {
+      if (on) {
+        r.classList.add("dim")
+      } else {
+        r.classList.remove("dim")
+      }
+    })
+  }
+
   return {
     addStructure,
     addElement,
     removeAllChild,
     refreshDivClass,
     updateColors,
+    createReminderBoxPrompt,
+    createReminder,
+    reformatDateString,
+    getTodaysDateFormatted,
+    toggleReminderDim,
   }
 })()

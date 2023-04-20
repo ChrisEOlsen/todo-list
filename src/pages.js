@@ -1,6 +1,6 @@
 import { utils } from "./utils.js"
 import { main } from "./index.js"
-import { events } from "./events.js"
+import { local } from "./localSaves.js"
 
 //NOTE: Each show* function is responsible for deleting all children and child elements,
 //and then re-initiating event listeners from events.js
@@ -66,6 +66,22 @@ export const pages = (() => {
     utils.refreshDivClass(`#${main.PAGE_ID}`, "reminders")
     utils.addElement(document.getElementById(main.PAGE_ID), "Reminders", "page-title")
     utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
+
+    const addReminderButton = document.createElement("button")
+    addReminderButton.textContent = "+New"
+    addReminderButton.classList.add("add-reminder-button")
+    document.getElementById("page-content-container").appendChild(addReminderButton)
+
+    const today = document.createElement("div")
+    today.classList.add("today-container")
+    document.getElementById("page-content-container").appendChild(today)
+    utils.addElement(document.querySelector(".today-container"), "Today", "reminder-title-small")
+
+    const dueLater = document.createElement("div")
+    dueLater.classList.add("due-later-container")
+    document.getElementById("page-content-container").appendChild(dueLater)
+    utils.addElement(document.querySelector(".due-later-container"), "Due Later", "reminder-title-small")
+    local.loadAllReminders()
   }
 
   const showAboutUs = () => {

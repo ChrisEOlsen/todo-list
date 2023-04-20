@@ -106,11 +106,123 @@ body {
   margin-top: 10px;
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: scroll;
 }
 .page-title {
   color: black;
   font-size: 36px;
 }
+/*=====REMINDERS PAGE=======*/
+.add-reminder-button {
+  background-color: var(--nav-color);
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 6px 10px 6px 10px;
+  border-radius: 10px;
+}
+.add-reminder-button:hover {
+  background-color: var(--header-color);
+}
+/* Styles for the form container */
+#reminderForm {
+  display: grid;
+  position: absolute;
+  top: 20px;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, auto) 1fr;
+  gap: 10px;
+  background-color: var(--nav-color);
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  max-width: 260px;
+  opacity: 0; /* Initial opacity set to 0 */
+  transform: scaleY(0); /* Initial scale set to 0 */
+  transition: transform 0.25s ease-in, opacity 0.25s ease-in;
+}
+#reminderForm.animate {
+  transform: scaleY(1);
+  opacity: 1;
+}
+/* Styles for the last row containing the priority item and the two buttons */
+#reminderForm .priority-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+#reminderForm textarea,
+#reminderForm input {
+  resize: none;
+  outline: none;
+  border: none;
+  border-radius: 2px;
+}
+#reminderForm textarea,
+#reminderForm input,
+#reminderForm button {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+#reminderForm button {
+  font-size: 12px;
+  border: none;
+  margin-left: 3px;
+  border-radius: 6px;
+  padding-bottom: 2px;
+}
+#reminderForm button:nth-child(1):hover {
+  background-color: red;
+  color: white;
+}
+#reminderForm button:nth-child(2):hover {
+  background-color: var(--header-color);
+  color: white;
+}
+#reminderForm label input[type="date"],
+#reminderForm .priority-container label select {
+  margin-left: 4px;
+}
+
+.today-container,
+.due-later-container {
+  margin-top: 20px;
+}
+.reminder-title-small {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.reminder {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  border-radius: 6px;
+  padding-right: 10px;
+  height: 30px;
+  background-color: var(--nav-color);
+}
+.reminder-text-container {
+  margin-left: 8px;
+}
+.reminder-box-checkbox {
+}
+.reminder-box-title {
+  font-size: 20px;
+  margin-right: 6px;
+  line-height: 30px;
+}
+.reminder-box-description {
+  font-size: 18px;
+  font-style: italic;
+  opacity: 0.6;
+  line-height: 30px;
+}
+.dim {
+  opacity: 0.3;
+}
+
 /*=====SETTINGS PAGE=======*/
 .color-scheme-container {
   margin-left: 20px;

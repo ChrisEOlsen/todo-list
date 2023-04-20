@@ -1,4 +1,5 @@
 import { pages } from "./pages.js"
+import { utils } from "./utils.js"
 
 //This module is responsible for initiating all the saved settings and styles in localStorage
 export const local = (() => {
@@ -35,11 +36,37 @@ export const local = (() => {
     document.documentElement.style.setProperty("--page-color", localStorage.getItem("COLOR_SCHEME_P"))
   }
 
+  const loadAllReminders = () => {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+
+      if (key.startsWith("reminder-")) {
+        const storedDataJSON = localStorage.getItem(key)
+        const storedData = JSON.parse(storedDataJSON)
+
+        const title = storedData.title
+        const description = storedData.description
+        const dueDate = utils.reformatDateString(storedData.dueDate)
+        const priority = storedData.priority
+
+        const reminder = utils.createReminder(title, description, dueDate, priority)
+
+        const today = utils.getTodaysDateFormatted()
+
+        if (today == dueDate) {
+          document.querySelector(".today-container").appendChild(reminder)
+        } else {
+          document.querySelector(".due-later-container").appendChild(reminder)
+        }
+      }
+    }
+  }
+
   const callStyles = () => {
     styleCurrentPageButton()
     loadCurrentPage()
     loadCurrentColor()
   }
 
-  return { callStyles, loadCurrentPage }
+  return { callStyles, loadCurrentPage, loadAllReminders }
 })()
