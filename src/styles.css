@@ -187,7 +187,10 @@ body {
 
 .today-container,
 .due-later-container {
-  margin-top: 20px;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .reminder-title-small {
   font-size: 24px;
@@ -205,8 +208,6 @@ body {
 }
 .reminder-text-container {
   margin-left: 8px;
-}
-.reminder-box-checkbox {
 }
 .reminder-box-title {
   font-size: 20px;

@@ -44,7 +44,7 @@ export const local = (() => {
         const storedDataJSON = localStorage.getItem(key)
         const storedData = JSON.parse(storedDataJSON)
 
-        const title = storedData.title
+        const title = `${storedData.title}: `
         const description = storedData.description
         const dueDate = utils.reformatDateString(storedData.dueDate)
         const priority = storedData.priority

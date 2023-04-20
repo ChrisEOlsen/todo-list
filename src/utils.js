@@ -19,7 +19,6 @@ export const utils = (() => {
     container.appendChild(newElement)
   }
 
-  //Also gets rid of all eventListeners
   const removeAllChild = parent => {
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild)
