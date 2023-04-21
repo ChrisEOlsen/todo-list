@@ -87,11 +87,12 @@ export const events = (() => {
 
         if (today == reminderDate) {
           document.querySelector(".today-container").appendChild(reminder)
-          localStorage.setItem(`reminder-${reminderData.title}`, reminderDataJSON)
+        } else if (utils.getEarliestDate(today, reminderDate) == reminderDate) {
+          document.querySelector(".overdue-container").appendChild(reminder)
         } else {
           document.querySelector(".due-later-container").appendChild(reminder)
-          localStorage.setItem(`reminder-${reminderData.title}`, reminderDataJSON)
         }
+        localStorage.setItem(`reminder-${reminderData.title}`, reminderDataJSON)
 
         targetElement.closest("form").remove()
         //activate +New button

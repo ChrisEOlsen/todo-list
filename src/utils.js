@@ -131,6 +131,17 @@ export const utils = (() => {
     return `${month}/${day}/${year}`
   }
 
+  function getEarliestDate(dateString1, dateString2) {
+    const date1 = new Date(Date.parse(dateString1))
+    const date2 = new Date(Date.parse(dateString2))
+
+    if (date1 < date2) {
+      return dateString1
+    } else {
+      return dateString2
+    }
+  }
+
   const createReminder = (title, description, dueDate, priority) => {
     // Create a div container with a class of 'reminder'
     const reminderContainer = document.createElement("div")
@@ -201,6 +212,7 @@ export const utils = (() => {
     createReminder,
     reformatDateString,
     getTodaysDateFormatted,
+    getEarliestDate,
     toggleReminderDim,
   }
 })()

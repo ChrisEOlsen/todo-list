@@ -81,6 +81,12 @@ export const pages = (() => {
     dueLater.classList.add("due-later-container")
     document.getElementById("page-content-container").appendChild(dueLater)
     utils.addElement(document.querySelector(".due-later-container"), "Due Later", "reminder-title-small")
+
+    const overDue = document.createElement("div")
+    overDue.classList.add("overdue-container")
+    document.getElementById("page-content-container").appendChild(overDue)
+    utils.addElement(document.querySelector(".overdue-container"), "Overdue", "reminder-title-small")
+
     local.loadAllReminders()
   }
 

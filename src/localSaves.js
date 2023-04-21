@@ -55,6 +55,8 @@ export const local = (() => {
 
         if (today == dueDate) {
           document.querySelector(".today-container").appendChild(reminder)
+        } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
+          document.querySelector(".overdue-container").appendChild(reminder)
         } else {
           document.querySelector(".due-later-container").appendChild(reminder)
         }

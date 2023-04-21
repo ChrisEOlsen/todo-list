@@ -186,7 +186,8 @@ body {
 }
 
 .today-container,
-.due-later-container {
+.due-later-container,
+.overdue-container {
   margin-top: 14px;
   display: flex;
   flex-direction: column;
@@ -194,7 +195,8 @@ body {
 }
 .reminder-title-small {
   font-size: 24px;
-  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid black;
 }
 .reminder {
   display: flex;
@@ -203,22 +205,22 @@ body {
   justify-content: space-between;
   border-radius: 6px;
   padding-right: 10px;
-  height: 30px;
-  background-color: var(--nav-color);
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.15);
 }
 .reminder-text-container {
   margin-left: 8px;
 }
 .reminder-box-title {
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 6px;
   line-height: 30px;
 }
 .reminder-box-description {
-  font-size: 18px;
+  font-size: 16px;
   font-style: italic;
-  opacity: 0.6;
   line-height: 30px;
+  color: white;
 }
 .dim {
   opacity: 0.3;
