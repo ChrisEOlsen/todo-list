@@ -81,4 +81,4 @@ export const main = (() => {
 main.createSkeleton()
 main.createAllElements()
 local.callStyles()
-events.initiateListeners()
+events.initListeners()

@@ -87,6 +87,17 @@ export const pages = (() => {
     document.getElementById("page-content-container").appendChild(overDue)
     utils.addElement(document.querySelector(".overdue-container"), "Overdue", "reminder-title-small")
 
+    const collapseIconHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="m2.5 15.25l7.5-7.5l7.5 7.5l1.5-1.5l-9-9l-9 9z"/></svg>`
+    const allTitles = document.querySelectorAll(".reminder-title-small")
+    allTitles.forEach(t => {
+      // Create an SVG element from the string
+      const parser = new DOMParser()
+      const svgDoc = parser.parseFromString(collapseIconHTML, "image/svg+xml")
+      const svgElement = svgDoc.documentElement
+      svgElement.id = `collapse-icon`
+      t.appendChild(svgElement)
+    })
+
     local.loadAllReminders()
   }
 

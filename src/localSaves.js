@@ -53,13 +53,7 @@ export const local = (() => {
 
         const today = utils.getTodaysDateFormatted()
 
-        if (today == dueDate) {
-          document.querySelector(".today-container").appendChild(reminder)
-        } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
-          document.querySelector(".overdue-container").appendChild(reminder)
-        } else {
-          document.querySelector(".due-later-container").appendChild(reminder)
-        }
+        utils.appendReminders(today, dueDate, reminder)
       }
     }
   }

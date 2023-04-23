@@ -25,6 +25,17 @@ export const utils = (() => {
     }
   }
 
+  function getAncestorNode(element, levelsUp) {
+    let ancestor = element
+    for (let i = 0; i < levelsUp; i++) {
+      if (!ancestor.parentNode) {
+        return null
+      }
+      ancestor = ancestor.parentNode
+    }
+    return ancestor
+  }
+
   const refreshDivClass = (identifier, cssClass) => {
     document.querySelector(identifier).classList = ""
     document.querySelector(identifier).classList.add(cssClass)
@@ -142,6 +153,16 @@ export const utils = (() => {
     }
   }
 
+  const appendReminders = (today, dueDate, reminder) => {
+    if (today == dueDate) {
+      document.querySelector(".today-container").appendChild(reminder)
+    } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
+      document.querySelector(".overdue-container").appendChild(reminder)
+    } else {
+      document.querySelector(".due-later-container").appendChild(reminder)
+    }
+  }
+
   const createReminder = (title, description, dueDate, priority) => {
     // Create a div container with a class of 'reminder'
     const reminderContainer = document.createElement("div")
@@ -191,21 +212,28 @@ export const utils = (() => {
     return reminderContainer
   }
 
-  const toggleReminderDim = on => {
-    const reminder = document.querySelectorAll(".reminder")
-    reminder.forEach(r => {
+  const toggleClassForElements = (elements, className, on) => {
+    elements.forEach(element => {
       if (on) {
-        r.classList.add("dim")
+        element.classList.add(className)
       } else {
-        r.classList.remove("dim")
+        element.classList.remove(className)
       }
     })
+  }
+
+  const toggleReminderDim = on => {
+    const reminders = document.querySelectorAll(".reminder")
+    const titles = document.querySelectorAll(".reminder-title-small")
+    toggleClassForElements(reminders, "dim", on)
+    toggleClassForElements(titles, "dim", on)
   }
 
   return {
     addStructure,
     addElement,
     removeAllChild,
+    getAncestorNode,
     refreshDivClass,
     updateColors,
     createReminderBoxPrompt,
@@ -213,6 +241,7 @@ export const utils = (() => {
     reformatDateString,
     getTodaysDateFormatted,
     getEarliestDate,
+    appendReminders,
     toggleReminderDim,
   }
 })()
