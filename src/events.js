@@ -87,9 +87,16 @@ export const events = (() => {
       document.getElementById("new-active").id = ""
     }
 
-    // COLLAPSE CONTAINERS
-    const isCollapseIcon = targetElement.id === "collapse-icon"
-    if (isCollapseIcon) {
+    //REMINDER - CHECKBOX CLICKED
+    if (targetElement.classList.contains("reminder-box-checkbox")) {
+      const ancestor = utils.getAncestorNode(targetElement, 2)
+      const title = ancestor.querySelector(".reminder-box-title").textContent.slice(0, -2)
+      localStorage.removeItem(`reminder-${title}`)
+      ancestor.remove()
+    }
+
+    //REMINDER - COLLAPSE CONTAINERS
+    if (targetElement.id === "collapse-icon") {
       const ancestor = utils.getAncestorNode(targetElement, 2)
       const reminderContainer = ancestor.querySelector(".reminder-container")
 
