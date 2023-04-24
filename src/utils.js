@@ -153,16 +153,6 @@ export const utils = (() => {
     }
   }
 
-  const appendReminders = (today, dueDate, reminder) => {
-    if (today == dueDate) {
-      document.querySelector(".today-container").appendChild(reminder)
-    } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
-      document.querySelector(".overdue-container").appendChild(reminder)
-    } else {
-      document.querySelector(".due-later-container").appendChild(reminder)
-    }
-  }
-
   const createReminder = (title, description, dueDate, priority) => {
     // Create a div container with a class of 'reminder'
     const reminderContainer = document.createElement("div")
@@ -210,6 +200,22 @@ export const utils = (() => {
         break
     }
     return reminderContainer
+  }
+
+  const appendReminders = (today, dueDate, reminder) => {
+    if (today == dueDate) {
+      const parent = document.querySelector(".today-container")
+      const reminderContainer = parent.querySelector(".reminder-container")
+      reminderContainer.appendChild(reminder)
+    } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
+      const parent = document.querySelector(".overdue-container")
+      const reminderContainer = parent.querySelector(".reminder-container")
+      reminderContainer.appendChild(reminder)
+    } else {
+      const parent = document.querySelector(".due-later-container")
+      const reminderContainer = parent.querySelector(".reminder-container")
+      reminderContainer.appendChild(reminder)
+    }
   }
 
   const toggleClassForElements = (elements, className, on) => {

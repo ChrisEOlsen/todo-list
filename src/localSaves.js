@@ -39,11 +39,9 @@ export const local = (() => {
   const loadAllReminders = () => {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
-
       if (key.startsWith("reminder-")) {
         const storedDataJSON = localStorage.getItem(key)
         const storedData = JSON.parse(storedDataJSON)
-
         const title = `${storedData.title}: `
         const description = storedData.description
         const dueDate = utils.reformatDateString(storedData.dueDate)

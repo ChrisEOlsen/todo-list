@@ -76,16 +76,19 @@ export const pages = (() => {
     today.classList.add("today-container")
     document.getElementById("page-content-container").appendChild(today)
     utils.addElement(document.querySelector(".today-container"), "Today", "reminder-title-small")
+    utils.addStructure(document.querySelector(".today-container"), "class", "reminder-container")
 
     const dueLater = document.createElement("div")
     dueLater.classList.add("due-later-container")
     document.getElementById("page-content-container").appendChild(dueLater)
     utils.addElement(document.querySelector(".due-later-container"), "Due Later", "reminder-title-small")
+    utils.addStructure(document.querySelector(".due-later-container"), "class", "reminder-container")
 
     const overDue = document.createElement("div")
     overDue.classList.add("overdue-container")
     document.getElementById("page-content-container").appendChild(overDue)
     utils.addElement(document.querySelector(".overdue-container"), "Overdue", "reminder-title-small")
+    utils.addStructure(document.querySelector(".overdue-container"), "class", "reminder-container")
 
     const collapseIconHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="m2.5 15.25l7.5-7.5l7.5 7.5l1.5-1.5l-9-9l-9 9z"/></svg>`
     const allTitles = document.querySelectorAll(".reminder-title-small")

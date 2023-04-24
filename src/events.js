@@ -28,9 +28,11 @@ export const events = (() => {
   //=====================================
   //============REMINDERS PAGE===========
   //=====================================
-  const initRemindersPageEvents = targetElement => {
+  const initRemindersPageEvents = (targetElement, e) => {
     // REMINDERS - +New CLICKED
-    if (targetElement.classList.contains("add-reminder-button") && targetElement.id != "new-active") {
+    const isNewReminderButton = targetElement.classList.contains("add-reminder-button")
+    const isNewButtonActive = targetElement.id !== "new-active"
+    if (isNewReminderButton && isNewButtonActive) {
       const form = utils.createReminderBoxPrompt()
       document.getElementById("page-content-container").appendChild(form)
       setTimeout(() => {
@@ -39,6 +41,7 @@ export const events = (() => {
       targetElement.id = "new-active" //deactivate +New button
       utils.toggleReminderDim(true)
     }
+
     // REMINDER PROMPT - FORM CONFIRM
     if (
       targetElement.tagName === "BUTTON" &&
@@ -73,27 +76,35 @@ export const events = (() => {
       document.getElementById("new-active").id = ""
       utils.toggleReminderDim(false)
     }
+
     // REMINDER PROMPT - FORM CANCEL
-    else if (
+    if (
       targetElement.tagName === "BUTTON" &&
       targetElement.textContent == "Cancel" &&
       targetElement.closest("form").id === "reminderForm"
     ) {
-      //activate +New button
       utils.toggleReminderDim(false)
       document.getElementById("new-active").id = ""
     }
 
-    //COLLAPSE CONTAINERS
-    if (targetElement.id == "collapse-icon") {
+    // COLLAPSE CONTAINERS
+    const isCollapseIcon = targetElement.id === "collapse-icon"
+    if (isCollapseIcon) {
       const ancestor = utils.getAncestorNode(targetElement, 2)
-      const reminders = ancestor.querySelectorAll(".reminder")
-      ancestor.classList.toggle("collapsed")
-      const isCollapsed = ancestor.classList.contains("collapsed")
+      const reminderContainer = ancestor.querySelector(".reminder-container")
+
+      reminderContainer.classList.toggle("collapsed")
+      const isCollapsed = reminderContainer.classList.contains("collapsed")
       targetElement.style.transform = isCollapsed ? "rotate(360deg)" : "rotate(180deg)"
-      reminders.forEach(r => {
-        r.style.display = isCollapsed ? "none" : "flex"
-      })
+
+      if (isCollapsed) {
+        const containerHeight = reminderContainer.getBoundingClientRect().height
+        reminderContainer.style.height = `${containerHeight}px`
+        reminderContainer.getBoundingClientRect()
+        reminderContainer.style.height = "0" // Collapse the container
+      } else {
+        reminderContainer.style.height = "auto" // Expand the container
+      }
     }
   }
   //=====================================
@@ -115,7 +126,7 @@ export const events = (() => {
       const targetElement = e.target
 
       initSettingsPageEvents(targetElement)
-      initRemindersPageEvents(targetElement)
+      initRemindersPageEvents(targetElement, e)
     })
   }
 

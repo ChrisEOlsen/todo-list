@@ -189,10 +189,15 @@ body {
 .due-later-container,
 .overdue-container {
   margin-top: 14px;
+}
+.reminder-container {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  transition: height 0.5s ease;
+  overflow: hidden;
 }
+
 .reminder-title-small {
   font-size: 24px;
   padding-bottom: 6px;
@@ -200,10 +205,12 @@ body {
   display: flex;
   justify-content: space-between;
   margin-right: 12px;
+  margin-bottom: 6px;
 }
 .reminder-title-small svg {
   transform: rotate(180deg);
   width: 18px;
+  margin-top: 10px;
 }
 .reminder {
   display: flex;
@@ -214,8 +221,10 @@ body {
   padding-right: 10px;
   height: fit-content;
   background-color: rgba(0, 0, 0, 0.15);
+  transition: height 0.5s;
+  overflow: hidden;
 }
-x .reminder-text-container {
+.reminder-text-container {
   margin-left: 4px;
 }
 .reminder-box-title {
