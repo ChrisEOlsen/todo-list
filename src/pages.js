@@ -1,6 +1,7 @@
 import { utils } from "./utils.js"
 import { main } from "./index.js"
 import { local } from "./localSaves.js"
+import { lab } from "color"
 
 //NOTE: Each show* function is responsible for deleting all children and child elements,
 //and then re-initiating event listeners from events.js
@@ -67,10 +68,30 @@ export const pages = (() => {
     utils.addElement(document.getElementById(main.PAGE_ID), "Reminders", "page-title")
     utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
 
+    const buttonContainer = document.createElement("div")
+    buttonContainer.classList.add("reminder-controls-container")
+    const label = document.createElement("div")
+    label.textContent = "Filter: "
     const addReminderButton = document.createElement("button")
     addReminderButton.textContent = "+New"
     addReminderButton.classList.add("add-reminder-button")
-    document.getElementById("page-content-container").appendChild(addReminderButton)
+    buttonContainer.appendChild(addReminderButton)
+    const filter = document.createElement("select")
+    filter.name = "filter"
+    filter.classList.add("reminder-filter-select")
+    const filterOptions = ["Priority", "Due Date"]
+    filterOptions.forEach(o => {
+      const option = document.createElement("option")
+      option.value = o
+      option.textContent = o
+      filter.appendChild(option)
+    })
+    const filterContainer = document.createElement("div")
+    filterContainer.classList.add("filter-container")
+    filterContainer.appendChild(label)
+    filterContainer.appendChild(filter)
+    buttonContainer.appendChild(filterContainer)
+    document.getElementById("page-content-container").appendChild(buttonContainer)
 
     const today = document.createElement("div")
     today.classList.add("today-container")
@@ -99,6 +120,9 @@ export const pages = (() => {
       const svgElement = svgDoc.documentElement
       svgElement.id = `collapse-icon`
       t.appendChild(svgElement)
+
+      //Make all titles none selectable
+      t.classList.add("no-select")
     })
 
     local.loadAllReminders()

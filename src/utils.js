@@ -202,20 +202,19 @@ export const utils = (() => {
     return reminderContainer
   }
 
-  const appendReminders = (today, dueDate, reminder) => {
-    if (today == dueDate) {
-      const parent = document.querySelector(".today-container")
-      const reminderContainer = parent.querySelector(".reminder-container")
-      reminderContainer.appendChild(reminder)
-    } else if (utils.getEarliestDate(today, dueDate) == dueDate) {
-      const parent = document.querySelector(".overdue-container")
-      const reminderContainer = parent.querySelector(".reminder-container")
-      reminderContainer.appendChild(reminder)
+  const getParentContainer = (today, dueDate) => {
+    if (today === dueDate) {
+      return document.querySelector(".today-container")
+    } else if (utils.getEarliestDate(today, dueDate) === dueDate) {
+      return document.querySelector(".overdue-container")
     } else {
-      const parent = document.querySelector(".due-later-container")
-      const reminderContainer = parent.querySelector(".reminder-container")
-      reminderContainer.appendChild(reminder)
+      return document.querySelector(".due-later-container")
     }
+  }
+  const appendReminders = (today, dueDate, reminder) => {
+    const parent = getParentContainer(today, dueDate)
+    const reminderContainer = parent.querySelector(".reminder-container")
+    reminderContainer.appendChild(reminder)
   }
 
   const toggleClassForElements = (elements, className, on) => {
