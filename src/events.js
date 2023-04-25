@@ -94,15 +94,21 @@ export const events = (() => {
       localStorage.removeItem(`reminder-${title}`)
       ancestor.remove()
     }
-
     //REMINDER - COLLAPSE CONTAINERS
-    if (targetElement.id === "collapse-icon") {
-      const ancestor = utils.getAncestorNode(targetElement, 2)
+    if (targetElement.id === "collapse-icon" || targetElement.parentNode.id === "collapse-icon") {
+      //Browser click event seperates SVG from its PATH
+      const ancestor =
+        targetElement.parentNode.id == "collapse-icon"
+          ? utils.getAncestorNode(targetElement, 3)
+          : utils.getAncestorNode(targetElement, 2)
+
+      const icon = targetElement.parentNode.id == "collapse-icon" ? targetElement.parentNode : targetElement
+
       const reminderContainer = ancestor.querySelector(".reminder-container")
 
       reminderContainer.classList.toggle("collapsed")
       const isCollapsed = reminderContainer.classList.contains("collapsed")
-      targetElement.style.transform = isCollapsed ? "rotate(360deg)" : "rotate(180deg)"
+      icon.style.transform = isCollapsed ? "rotate(360deg)" : "rotate(180deg)"
 
       if (isCollapsed) {
         const containerHeight = reminderContainer.getBoundingClientRect().height
@@ -124,7 +130,7 @@ export const events = (() => {
     }
   }
   //=====================================
-  //============PAGE EVENTS==============
+  //============ALL PAGE EVENTS==========
   //=====================================
   const initPageEvents = () => {
     const page = document.getElementById(main.PAGE_ID)

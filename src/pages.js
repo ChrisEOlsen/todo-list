@@ -70,16 +70,16 @@ export const pages = (() => {
 
     const buttonContainer = document.createElement("div")
     buttonContainer.classList.add("reminder-controls-container")
-    const label = document.createElement("div")
-    label.textContent = "Filter: "
     const addReminderButton = document.createElement("button")
     addReminderButton.textContent = "+New"
     addReminderButton.classList.add("add-reminder-button")
     buttonContainer.appendChild(addReminderButton)
+    const label = document.createElement("div")
+    label.textContent = "Filter by: "
     const filter = document.createElement("select")
     filter.name = "filter"
     filter.classList.add("reminder-filter-select")
-    const filterOptions = ["Priority", "Due Date"]
+    const filterOptions = ["Due Date", "Priority"]
     filterOptions.forEach(o => {
       const option = document.createElement("option")
       option.value = o

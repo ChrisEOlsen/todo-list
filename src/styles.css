@@ -139,8 +139,9 @@ body {
   color: white;
   border: none;
   font-size: 16px;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 2px 4px 2px 4px;
+  outline: none;
 }
 .add-reminder-button {
   background-color: var(--nav-color);
