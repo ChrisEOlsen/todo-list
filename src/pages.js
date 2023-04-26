@@ -112,7 +112,6 @@ export const pages = (() => {
     utils.addStructure(document.querySelector(".overdue-container"), "class", "reminder-container")
 
     utils.addCollapseIcons()
-
     local.loadAllReminders()
   }
 

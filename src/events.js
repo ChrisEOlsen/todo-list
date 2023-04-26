@@ -125,24 +125,7 @@ export const events = (() => {
       }
     }
   }
-  //=====================================
-  //============SETTINGS PAGE============
-  //=====================================
-  const initSettingsPageEvents = targetElement => {
-    // SETTINGS - Color scheme clicked
-    if (targetElement.classList.contains("color-choice")) {
-      utils.updateColors(targetElement)
-    }
-  }
-  //=====================================
-  //============ALL PAGE EVENTS==========
-  //=====================================
-  const handleClick = e => {
-    const targetElement = e.target
-    initSettingsPageEvents(targetElement)
-    initRemindersPageEvents(targetElement, e)
-  }
-
+  //REMINDERS - FILTER CHANGE, TYPE === 'change'
   const handleFilterChangeReminders = e => {
     const priority = e.target.value === "Priority"
     const containers = {
@@ -165,13 +148,33 @@ export const events = (() => {
 
     if (!priority) local.loadAllReminders()
   }
+  //=====================================
+  //============SETTINGS PAGE============
+  //=====================================
+  const initSettingsPageEvents = targetElement => {
+    // SETTINGS - Color scheme clicked
+    if (targetElement.classList.contains("color-choice")) {
+      utils.updateColors(targetElement)
+    }
+  }
+  //=====================================
+  //============ALL PAGE EVENTS==========
+  //=====================================
+  const handleEvent = e => {
+    const targetElement = e.target
+    initSettingsPageEvents(targetElement)
+    initRemindersPageEvents(targetElement, e)
+
+    // Handle change event for remindersFilter
+    if (e.type === "change" && targetElement.matches(".reminder-filter-select")) {
+      handleFilterChangeReminders(e)
+    }
+  }
 
   const initPageEvents = () => {
     const page = document.getElementById(main.PAGE_ID)
-    const remindersFilter = document.querySelector(".reminder-filter-select")
-
-    page.addEventListener("click", handleClick)
-    remindersFilter.addEventListener("change", handleFilterChangeReminders)
+    page.addEventListener("click", handleEvent)
+    page.addEventListener("change", handleEvent)
   }
 
   const initListeners = () => {
