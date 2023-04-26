@@ -74,7 +74,8 @@ export const events = (() => {
         ? utils.appendReminderByDate(today, reminderDate, reminder)
         : utils.appendReminderByPriority(reminderData.priority, reminder)
 
-      localStorage.setItem(`reminder-${reminderData.title}`, reminderDataJSON)
+      const uniqueId = `reminder-${Date.now()}`
+      localStorage.setItem(uniqueId, reminderDataJSON)
 
       targetElement.closest("form").remove()
       //activate +New button

@@ -42,7 +42,6 @@ export const local = (() => {
       document.querySelector(".due-later-container .reminder-container"),
       document.querySelector(".overdue-container .reminder-container"),
     ]
-
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
       if (key.startsWith("reminder-")) {
@@ -60,7 +59,7 @@ export const local = (() => {
       }
     }
 
-    // Sort all reminders by their border color after appending them
+    // Sort all reminders by their border color and dates after appending them
     containers.forEach(container => utils.sortReminders(container))
   }
 
