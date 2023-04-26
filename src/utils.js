@@ -176,7 +176,7 @@ export const utils = (() => {
     }
   }
 
-  const createReminder = (title, description, dueDate, priority) => {
+  const createReminder = (title, description, dueDate, priority, uniqueID) => {
     // Create a div container with a class of 'reminder'
     const reminderContainer = document.createElement("div")
     reminderContainer.classList.add("reminder")
@@ -222,6 +222,7 @@ export const utils = (() => {
         reminderContainer.style.borderRight = "4px solid green"
         break
     }
+    reminderContainer.id = uniqueID
     return reminderContainer
   }
 

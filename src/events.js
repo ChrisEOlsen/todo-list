@@ -57,25 +57,26 @@ export const events = (() => {
         dueDate: formData.get("dueDate"),
         priority: formData.get("priority"),
       }
+      const uniqueID = Date.now()
       const reminder = utils.createReminder(
         `${reminderData.title}: `,
         reminderData.description,
         utils.reformatDateString(reminderData.dueDate),
-        reminderData.priority
+        reminderData.priority,
+        uniqueID
       )
 
       const reminderDate = utils.reformatDateString(reminderData.dueDate)
       const today = utils.getTodaysDateFormatted()
       const reminderDataJSON = JSON.stringify(reminderData)
 
+      localStorage.setItem(`reminder-${reminder.id}`, reminderDataJSON)
+
       const currentFilter = document.querySelector(".reminder-filter-select").value
-      console.log(reminderData.priority)
+
       currentFilter === "Due Date"
         ? utils.appendReminderByDate(today, reminderDate, reminder)
         : utils.appendReminderByPriority(reminderData.priority, reminder)
-
-      const uniqueId = `reminder-${Date.now()}`
-      localStorage.setItem(uniqueId, reminderDataJSON)
 
       targetElement.closest("form").remove()
       //activate +New button
@@ -96,8 +97,13 @@ export const events = (() => {
     //REMINDER - CHECKBOX CLICKED
     if (targetElement.classList.contains("reminder-box-checkbox")) {
       const ancestor = utils.getAncestorNode(targetElement, 2)
-      const title = ancestor.querySelector(".reminder-box-title").textContent.slice(0, -2)
-      localStorage.removeItem(`reminder-${title}`)
+      const identifier = ancestor.id
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key.startsWith(`reminder-${identifier}`)) {
+          localStorage.removeItem(key)
+        }
+      }
       ancestor.remove()
     }
     //REMINDER - COLLAPSE CONTAINERS
