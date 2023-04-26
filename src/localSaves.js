@@ -37,6 +37,12 @@ export const local = (() => {
   }
 
   const loadAllReminders = () => {
+    const containers = [
+      document.querySelector(".today-container .reminder-container"),
+      document.querySelector(".due-later-container .reminder-container"),
+      document.querySelector(".overdue-container .reminder-container"),
+    ]
+
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
       if (key.startsWith("reminder-")) {
@@ -50,9 +56,12 @@ export const local = (() => {
 
         const reminder = utils.createReminder(title, description, dueDate, priority)
 
-        utils.appendReminders(today, dueDate, reminder)
+        utils.appendReminderByDate(today, dueDate, reminder)
       }
     }
+
+    // Sort all reminders by their border color after appending them
+    containers.forEach(container => utils.sortReminders(container))
   }
 
   const callStyles = () => {

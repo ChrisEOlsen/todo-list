@@ -61,6 +61,29 @@ export const utils = (() => {
     localStorage.setItem("COLOR_SCHEME_P", color100)
   }
 
+  const addCollapseIcons = () => {
+    const collapseIconHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="m2.5 15.25l7.5-7.5l7.5 7.5l1.5-1.5l-9-9l-9 9z"/></svg>`
+    const allTitles = document.querySelectorAll(".reminder-title-small")
+    allTitles.forEach(t => {
+      // Create an SVG element from the string
+      const parser = new DOMParser()
+      const svgDoc = parser.parseFromString(collapseIconHTML, "image/svg+xml")
+      const svgElement = svgDoc.documentElement
+      svgElement.id = `collapse-icon`
+      t.appendChild(svgElement)
+
+      //Make all titles none selectable
+      t.classList.add("no-select")
+    })
+  }
+
+  const changeReminderContainerTitles = (title1, title2, title3) => {
+    document.querySelector(".today-container .reminder-title-small").textContent = title1
+    document.querySelector(".due-later-container .reminder-title-small").textContent = title2
+    document.querySelector(".overdue-container .reminder-title-small").textContent = title3
+    addCollapseIcons()
+  }
+
   function createReminderBoxPrompt() {
     const form = document.createElement("form")
     form.id = "reminderForm"
@@ -202,19 +225,61 @@ export const utils = (() => {
     return reminderContainer
   }
 
-  const getParentContainer = (today, dueDate) => {
-    if (today === dueDate) {
-      return document.querySelector(".today-container")
-    } else if (utils.getEarliestDate(today, dueDate) === dueDate) {
-      return document.querySelector(".overdue-container")
-    } else {
-      return document.querySelector(".due-later-container")
+  const getParentContainer = (type, value) => {
+    const containerMap = {
+      date: {
+        today: ".today-container",
+        overdue: ".overdue-container",
+        dueLater: ".due-later-container",
+      },
+      priority: {
+        Red: ".today-container",
+        Yellow: ".due-later-container",
+        Green: ".overdue-container",
+      },
     }
+    return document.querySelector(containerMap[type][value])
   }
-  const appendReminders = (today, dueDate, reminder) => {
-    const parent = getParentContainer(today, dueDate)
+
+  const sortReminders = container => {
+    const borderColorOrder = { red: 1, yellow: 2, green: 3 }
+    const parseDate = dateString => {
+      const [month, day, year] = dateString.split("/")
+      return new Date(year, month - 1, day)
+    }
+
+    const reminders = Array.from(container.querySelectorAll(".reminder"))
+    reminders.sort((a, b) => {
+      const aBorderColor = a.style.borderRight.slice(10)
+      const bBorderColor = b.style.borderRight.slice(10)
+      const priorityComparison = borderColorOrder[aBorderColor] - borderColorOrder[bBorderColor]
+      if (priorityComparison !== 0) return priorityComparison
+
+      return (
+        parseDate(a.querySelector(".reminder-box-due-date").innerText) -
+        parseDate(b.querySelector(".reminder-box-due-date").innerText)
+      )
+    })
+
+    container.innerHTML = ""
+    reminders.forEach(reminder => container.appendChild(reminder))
+  }
+
+  const appendReminder = (type, value, reminder) => {
+    const parent = getParentContainer(type, value)
     const reminderContainer = parent.querySelector(".reminder-container")
     reminderContainer.appendChild(reminder)
+    sortReminders(reminderContainer)
+  }
+
+  const appendReminderByDate = (today, dueDate, reminder) => {
+    const dateType =
+      today === dueDate ? "today" : utils.getEarliestDate(today, dueDate) === dueDate ? "overdue" : "dueLater"
+    appendReminder("date", dateType, reminder)
+  }
+
+  const appendReminderByPriority = (priority, reminder) => {
+    appendReminder("priority", priority, reminder)
   }
 
   const toggleClassForElements = (elements, className, on) => {
@@ -240,13 +305,17 @@ export const utils = (() => {
     removeAllChild,
     getAncestorNode,
     refreshDivClass,
+    addCollapseIcons,
+    changeReminderContainerTitles,
+    sortReminders,
     updateColors,
     createReminderBoxPrompt,
     createReminder,
     reformatDateString,
     getTodaysDateFormatted,
     getEarliestDate,
-    appendReminders,
+    appendReminderByDate,
+    appendReminderByPriority,
     toggleReminderDim,
   }
 })()

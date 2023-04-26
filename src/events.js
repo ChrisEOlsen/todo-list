@@ -68,7 +68,12 @@ export const events = (() => {
       const today = utils.getTodaysDateFormatted()
       const reminderDataJSON = JSON.stringify(reminderData)
 
-      utils.appendReminders(today, reminderDate, reminder)
+      const currentFilter = document.querySelector(".reminder-filter-select").value
+      console.log(reminderData.priority)
+      currentFilter === "Due Date"
+        ? utils.appendReminderByDate(today, reminderDate, reminder)
+        : utils.appendReminderByPriority(reminderData.priority, reminder)
+
       localStorage.setItem(`reminder-${reminderData.title}`, reminderDataJSON)
 
       targetElement.closest("form").remove()
@@ -132,15 +137,41 @@ export const events = (() => {
   //=====================================
   //============ALL PAGE EVENTS==========
   //=====================================
+  const handleClick = e => {
+    const targetElement = e.target
+    initSettingsPageEvents(targetElement)
+    initRemindersPageEvents(targetElement, e)
+  }
+
+  const handleFilterChangeReminders = e => {
+    const priority = e.target.value === "Priority"
+    const containers = {
+      red: document.querySelector(".today-container .reminder-container"),
+      yellow: document.querySelector(".due-later-container .reminder-container"),
+      green: document.querySelector(".overdue-container .reminder-container"),
+    }
+
+    document.querySelectorAll(".reminder").forEach(r => {
+      const newElem = r.cloneNode(true)
+      r.remove()
+      priority ? containers[r.style.borderRight.slice(10)].appendChild(newElem) : null
+    })
+
+    utils.changeReminderContainerTitles(
+      priority ? "Reds" : "Today",
+      priority ? "Yellows" : "Due Later",
+      priority ? "Greens" : "Overdue"
+    )
+
+    if (!priority) local.loadAllReminders()
+  }
+
   const initPageEvents = () => {
     const page = document.getElementById(main.PAGE_ID)
+    const remindersFilter = document.querySelector(".reminder-filter-select")
 
-    page.addEventListener("click", e => {
-      const targetElement = e.target
-
-      initSettingsPageEvents(targetElement)
-      initRemindersPageEvents(targetElement, e)
-    })
+    page.addEventListener("click", handleClick)
+    remindersFilter.addEventListener("change", handleFilterChangeReminders)
   }
 
   const initListeners = () => {
