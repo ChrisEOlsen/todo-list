@@ -1,4 +1,5 @@
 import Color from "color"
+import { main } from "./index.js"
 
 export const utils = (() => {
   const addStructure = (container, identifierType, identifier) => {
@@ -283,21 +284,26 @@ export const utils = (() => {
     appendReminder("priority", priority, reminder)
   }
 
-  const toggleClassForElements = (elements, className, on) => {
-    elements.forEach(element => {
-      if (on) {
-        element.classList.add(className)
-      } else {
-        element.classList.remove(className)
-      }
-    })
-  }
+  const togglePageInputs = disabled => {
+    const containers = [
+      document.querySelector(".today-container"),
+      document.querySelector(".due-later-container"),
+      document.querySelector(".overdue-container"),
+    ]
 
-  const toggleReminderDim = on => {
-    const reminders = document.querySelectorAll(".reminder")
-    const titles = document.querySelectorAll(".reminder-title-small")
-    toggleClassForElements(reminders, "dim", on)
-    toggleClassForElements(titles, "dim", on)
+    containers.forEach(c => {
+      if (c) c.classList.toggle("dim")
+    })
+
+    const form = document.getElementById("reminderForm")
+    const page = document.getElementById(main.PAGE_ID)
+
+    if (page) {
+      const inputs = page.querySelectorAll("input, button, textarea, select")
+      inputs.forEach(input => {
+        if (!form || !form.contains(input)) input.disabled = disabled
+      })
+    }
   }
 
   return {
@@ -317,6 +323,6 @@ export const utils = (() => {
     getEarliestDate,
     appendReminderByDate,
     appendReminderByPriority,
-    toggleReminderDim,
+    togglePageInputs,
   }
 })()

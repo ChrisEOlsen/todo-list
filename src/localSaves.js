@@ -51,9 +51,10 @@ export const local = (() => {
         const description = storedData.description
         const dueDate = utils.reformatDateString(storedData.dueDate)
         const priority = storedData.priority
+        const uniqueID = storedData.id
         const today = utils.getTodaysDateFormatted()
 
-        const reminder = utils.createReminder(title, description, dueDate, priority)
+        const reminder = utils.createReminder(title, description, dueDate, priority, uniqueID)
 
         utils.appendReminderByDate(today, dueDate, reminder)
       }

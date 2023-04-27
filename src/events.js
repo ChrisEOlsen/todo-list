@@ -38,8 +38,7 @@ export const events = (() => {
       setTimeout(() => {
         form.classList.add("animate")
       }, 10)
-      targetElement.id = "new-active" //deactivate +New button
-      utils.toggleReminderDim(true)
+      utils.togglePageInputs(true)
     }
 
     // REMINDER PROMPT - FORM CONFIRM
@@ -50,20 +49,21 @@ export const events = (() => {
       targetElement.closest("form").id === "reminderForm"
     ) {
       e.preventDefault() // Prevent default form submission behavior
+      const uniqueID = Date.now()
       const formData = new FormData(targetElement.closest("form"))
       const reminderData = {
         title: formData.get("title"),
         description: formData.get("description"),
         dueDate: formData.get("dueDate"),
         priority: formData.get("priority"),
+        id: uniqueID,
       }
-      const uniqueID = Date.now()
       const reminder = utils.createReminder(
         `${reminderData.title}: `,
         reminderData.description,
         utils.reformatDateString(reminderData.dueDate),
         reminderData.priority,
-        uniqueID
+        reminderData.id
       )
 
       const reminderDate = utils.reformatDateString(reminderData.dueDate)
@@ -78,10 +78,8 @@ export const events = (() => {
         ? utils.appendReminderByDate(today, reminderDate, reminder)
         : utils.appendReminderByPriority(reminderData.priority, reminder)
 
+      utils.togglePageInputs(false)
       targetElement.closest("form").remove()
-      //activate +New button
-      document.getElementById("new-active").id = ""
-      utils.toggleReminderDim(false)
     }
 
     // REMINDER PROMPT - FORM CANCEL
@@ -90,8 +88,8 @@ export const events = (() => {
       targetElement.textContent == "Cancel" &&
       targetElement.closest("form").id === "reminderForm"
     ) {
-      utils.toggleReminderDim(false)
-      document.getElementById("new-active").id = ""
+      utils.togglePageInputs(false)
+      targetElement.closest("form").remove()
     }
 
     //REMINDER - CHECKBOX CLICKED
@@ -145,6 +143,11 @@ export const events = (() => {
       const newElem = r.cloneNode(true)
       r.remove()
       priority ? containers[r.style.borderRight.slice(10)].appendChild(newElem) : null
+    })
+
+    const allContainers = document.querySelectorAll(".reminder-container")
+    allContainers.forEach(c => {
+      utils.sortReminders(c)
     })
 
     utils.changeReminderContainerTitles(
