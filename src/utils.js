@@ -284,18 +284,12 @@ export const utils = (() => {
     appendReminder("priority", priority, reminder)
   }
 
-  const togglePageInputs = disabled => {
-    const containers = [
-      document.querySelector(".today-container"),
-      document.querySelector(".due-later-container"),
-      document.querySelector(".overdue-container"),
-    ]
-
-    containers.forEach(c => {
+  const togglePageInputs = (form_ID, disabled, containerArr) => {
+    containerArr.forEach(c => {
       if (c) c.classList.toggle("dim")
     })
 
-    const form = document.getElementById("reminderForm")
+    const form = document.getElementById(form_ID)
     const page = document.getElementById(main.PAGE_ID)
 
     if (page) {
@@ -304,6 +298,93 @@ export const utils = (() => {
         if (!form || !form.contains(input)) input.disabled = disabled
       })
     }
+  }
+  function createJournalEntryPrompt() {
+    const form = document.createElement("form")
+    form.id = "journalEntryForm"
+    form.className = "journal-entry-prompt"
+
+    // Title input
+    const titleInput = document.createElement("input")
+    titleInput.type = "text"
+    titleInput.name = "title"
+    titleInput.placeholder = "Title"
+    titleInput.className = "journal-prompt-title"
+    form.appendChild(titleInput)
+
+    // Journal entry input
+    const entryInput = document.createElement("textarea")
+    entryInput.name = "entry"
+    entryInput.placeholder = "Journal entry"
+    entryInput.className = "journal-prompt-entry"
+    form.appendChild(entryInput)
+
+    // Buttons container
+    const buttonsContainer = document.createElement("div")
+    buttonsContainer.className = "buttons-container"
+
+    // Cancel button
+    const cancelButton = document.createElement("button")
+    cancelButton.type = "button"
+    cancelButton.textContent = "Cancel"
+    cancelButton.className = "journal-cancel"
+    cancelButton.onclick = () => form.remove() // Remove form when Cancel button is clicked
+    buttonsContainer.appendChild(cancelButton)
+
+    // Confirm button
+    const confirmButton = document.createElement("button")
+    confirmButton.type = "submit"
+    confirmButton.textContent = "Confirm"
+    confirmButton.className = "journal-confirm"
+    buttonsContainer.appendChild(confirmButton)
+
+    form.appendChild(buttonsContainer)
+
+    return form
+  }
+
+  const createJournalEntry = (title, entry, date, uniqueID) => {
+    // Create a div container with a class of 'journal-entry'
+    const journalEntryContainer = document.createElement("div")
+    journalEntryContainer.classList.add("journal-entry")
+
+    const journalTextContainer = document.createElement("div")
+    journalTextContainer.classList.add("journal-text-container")
+
+    // Create a title container with a class of journal-box-title
+    const journalTitleContainer = document.createElement("div")
+    journalTitleContainer.classList.add("journal-box-title")
+
+    // Create a title element
+    const journalTitle = document.createElement("span")
+
+    // Check if title is empty or not defined and set default value
+    if (!title || title.trim() === "") {
+      journalTitle.textContent = "Journal Entry:"
+    } else {
+      journalTitle.textContent = title
+    }
+
+    // Create a date element
+    const journalDate = document.createElement("span")
+    journalDate.textContent = date
+
+    // Append title and date to the title container
+    journalTitleContainer.appendChild(journalTitle)
+    journalTitleContainer.appendChild(journalDate)
+
+    // Create an entry element with a class of journal-box-entry
+    const journalEntry = document.createElement("span")
+    journalEntry.classList.add("journal-box-entry")
+    journalEntry.textContent = entry
+
+    // Append the elements to the journal entry container
+    journalTextContainer.appendChild(journalTitleContainer)
+    journalTextContainer.appendChild(journalEntry)
+    journalEntryContainer.appendChild(journalTextContainer)
+
+    journalEntryContainer.id = uniqueID
+    return journalEntryContainer
   }
 
   return {
@@ -324,5 +405,7 @@ export const utils = (() => {
     appendReminderByDate,
     appendReminderByPriority,
     togglePageInputs,
+    createJournalEntryPrompt,
+    createJournalEntry,
   }
 })()

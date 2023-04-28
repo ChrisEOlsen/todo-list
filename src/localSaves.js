@@ -64,11 +64,39 @@ export const local = (() => {
     containers.forEach(container => utils.sortReminders(container))
   }
 
+  const loadAllEntries = () => {
+    let journalEntries = []
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (key.startsWith("journal-")) {
+        const storedDataJSON = localStorage.getItem(key)
+        const storedData = JSON.parse(storedDataJSON)
+        const title = storedData.title
+        const entry = storedData.entry
+        const date = storedData.date
+        const uniqueID = storedData.id
+
+        const journalEntry = utils.createJournalEntry(title, entry, date, uniqueID)
+        journalEntries.push(journalEntry)
+      }
+    }
+
+    // Sort the journal entries array by uniqueID
+    journalEntries.sort((a, b) => parseInt(a.id) - parseInt(b.id))
+
+    // Append the sorted journal entries to the journal container
+    const journalContainer = document.querySelector(".journal-container")
+    journalEntries.forEach(journalEntry => {
+      journalContainer.appendChild(journalEntry)
+    })
+  }
+
   const callStyles = () => {
     styleCurrentPageButton()
     loadCurrentPage()
     loadCurrentColor()
   }
 
-  return { callStyles, loadCurrentPage, loadAllReminders }
+  return { callStyles, loadCurrentPage, loadAllReminders, loadAllEntries }
 })()

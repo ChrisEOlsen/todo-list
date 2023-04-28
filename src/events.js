@@ -29,6 +29,12 @@ export const events = (() => {
   //============REMINDERS PAGE===========
   //=====================================
   const initRemindersPageEvents = (targetElement, e) => {
+    const reminderContainerArr = [
+      document.querySelector(".today-container"),
+      document.querySelector(".due-later-container"),
+      document.querySelector(".overdue-container"),
+    ]
+
     // REMINDERS - +New CLICKED
     const isNewReminderButton = targetElement.classList.contains("add-reminder-button")
     const isNewButtonActive = targetElement.id !== "new-active"
@@ -38,7 +44,7 @@ export const events = (() => {
       setTimeout(() => {
         form.classList.add("animate")
       }, 10)
-      utils.togglePageInputs(true)
+      utils.togglePageInputs("reminderForm", true, reminderContainerArr)
     }
 
     // REMINDER PROMPT - FORM CONFIRM
@@ -78,7 +84,7 @@ export const events = (() => {
         ? utils.appendReminderByDate(today, reminderDate, reminder)
         : utils.appendReminderByPriority(reminderData.priority, reminder)
 
-      utils.togglePageInputs(false)
+      utils.togglePageInputs("reminderForm", false, reminderContainerArr)
       targetElement.closest("form").remove()
     }
 
@@ -88,8 +94,7 @@ export const events = (() => {
       targetElement.textContent == "Cancel" &&
       targetElement.closest("form").id === "reminderForm"
     ) {
-      utils.togglePageInputs(false)
-      targetElement.closest("form").remove()
+      utils.togglePageInputs("reminderForm", false, reminderContainerArr)
     }
 
     //REMINDER - CHECKBOX CLICKED
@@ -159,6 +164,61 @@ export const events = (() => {
     if (!priority) local.loadAllReminders()
   }
   //=====================================
+  //============JOURNAL PAGE+============
+  //=====================================
+  const initJournalPageEvents = (targetElement, e) => {
+    targetElement = e.target
+
+    const journalContainerArr = [document.querySelector(".journal-container")]
+
+    //JOURNAL ADD NEW ENTRY
+    if (
+      targetElement.classList.contains("journal-entry-button") ||
+      targetElement.classList.contains("pencil-icon") ||
+      targetElement.parentNode.classList.contains("pencil-icon")
+    ) {
+      const journalEntryPrompt = utils.createJournalEntryPrompt()
+      document.getElementById("page-content-container").appendChild(journalEntryPrompt)
+      setTimeout(() => {
+        journalEntryPrompt.classList.add("animate")
+      }, 10)
+
+      utils.togglePageInputs("journalEntryForm", true, journalContainerArr)
+    }
+
+    //JOURNAL FORM CONFIRM
+    if (targetElement.classList.contains("journal-confirm")) {
+      e.preventDefault()
+      const uniqueID = Date.now()
+      const formData = new FormData(targetElement.closest("form"))
+      const journalEntryData = {
+        title: formData.get("title"),
+        entry: formData.get("entry"),
+        date: utils.getTodaysDateFormatted(),
+        id: uniqueID,
+      }
+      const journalEntry = utils.createJournalEntry(
+        journalEntryData.title,
+        journalEntryData.entry,
+        journalEntryData.date,
+        journalEntryData.id
+      )
+
+      const journalEntryDataJSON = JSON.stringify(journalEntryData)
+      localStorage.setItem(`journal-${journalEntry.id}`, journalEntryDataJSON)
+
+      document.querySelector(".journal-container").appendChild(journalEntry)
+
+      utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
+      targetElement.closest("form").remove()
+    }
+    //JOURNAL FORM CANCEL
+    if (targetElement.classList.contains("journal-cancel")) {
+      utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
+    }
+  }
+
+  //=====================================
   //============SETTINGS PAGE============
   //=====================================
   const initSettingsPageEvents = targetElement => {
@@ -174,6 +234,7 @@ export const events = (() => {
     const targetElement = e.target
     initSettingsPageEvents(targetElement)
     initRemindersPageEvents(targetElement, e)
+    initJournalPageEvents(targetElement, e)
 
     // Handle change event for remindersFilter
     if (e.type === "change" && targetElement.matches(".reminder-filter-select")) {
