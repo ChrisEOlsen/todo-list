@@ -387,6 +387,13 @@ export const utils = (() => {
     return journalEntryContainer
   }
 
+  //for event handler
+  const hasClassOrParentHasClass = (element, className) => {
+    return (
+      element.classList.contains(className) || (element.parentNode && element.parentNode.classList.contains(className))
+    )
+  }
+
   return {
     addStructure,
     addElement,
@@ -407,5 +414,6 @@ export const utils = (() => {
     togglePageInputs,
     createJournalEntryPrompt,
     createJournalEntry,
+    hasClassOrParentHasClass,
   }
 })()

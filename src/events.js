@@ -173,9 +173,9 @@ export const events = (() => {
 
     //JOURNAL ADD NEW ENTRY
     if (
-      targetElement.classList.contains("journal-entry-button") ||
-      targetElement.classList.contains("pencil-icon") ||
-      targetElement.parentNode.classList.contains("pencil-icon")
+      ["journal-entry-button", "pencil-icon"].some(className =>
+        utils.hasClassOrParentHasClass(targetElement, className)
+      )
     ) {
       const journalEntryPrompt = utils.createJournalEntryPrompt()
       document.getElementById("page-content-container").appendChild(journalEntryPrompt)
@@ -207,7 +207,7 @@ export const events = (() => {
       const journalEntryDataJSON = JSON.stringify(journalEntryData)
       localStorage.setItem(`journal-${journalEntry.id}`, journalEntryDataJSON)
 
-      document.querySelector(".journal-container").appendChild(journalEntry)
+      document.querySelector(".journal-container").prepend(journalEntry)
 
       utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
       targetElement.closest("form").remove()
@@ -215,6 +215,15 @@ export const events = (() => {
     //JOURNAL FORM CANCEL
     if (targetElement.classList.contains("journal-cancel")) {
       utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
+    }
+
+    //JOURNAL ENTRY CLICKED -EXPAND
+    if (
+      ["journal-entry", "journal-box-entry", "journal-text-container", "journal-box-title"].some(className =>
+        utils.hasClassOrParentHasClass(targetElement, className)
+      )
+    ) {
+      //EXPAND THE ENTRY HERE
     }
   }
 

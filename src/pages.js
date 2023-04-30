@@ -59,10 +59,11 @@ export const pages = (() => {
     utils.removeAllChild(document.getElementById(main.PAGE_ID))
     utils.refreshDivClass(`#${main.PAGE_ID}`, "journal")
     utils.addElement(document.getElementById(main.PAGE_ID), "Journal", "page-title")
-    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
 
-    utils.addStructure(document.getElementById("page-content-container"), "class", "journal-controls-container")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "class", "journal-controls-container")
     const buttonContainer = document.querySelector(".journal-controls-container")
+
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
 
     const journalEntryButton = document.createElement("button")
     const pencilIcon =
@@ -82,9 +83,8 @@ export const pages = (() => {
     utils.removeAllChild(document.getElementById(main.PAGE_ID))
     utils.refreshDivClass(`#${main.PAGE_ID}`, "reminders")
     utils.addElement(document.getElementById(main.PAGE_ID), "Reminders", "page-title")
-    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
 
-    utils.addStructure(document.getElementById("page-content-container"), "class", "reminder-controls-container")
+    utils.addStructure(document.getElementById(main.PAGE_ID), "class", "reminder-controls-container")
     const buttonContainer = document.querySelector(".reminder-controls-container")
     const addReminderButton = document.createElement("button")
     addReminderButton.textContent = "+New"
@@ -107,7 +107,9 @@ export const pages = (() => {
     filterContainer.appendChild(label)
     filterContainer.appendChild(filter)
     buttonContainer.appendChild(filterContainer)
-    document.getElementById("page-content-container").appendChild(buttonContainer)
+    document.getElementById(main.PAGE_ID).appendChild(buttonContainer)
+
+    utils.addStructure(document.getElementById(main.PAGE_ID), "id", "page-content-container")
 
     const today = document.createElement("div")
     today.classList.add("today-container")

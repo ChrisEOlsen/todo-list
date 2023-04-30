@@ -82,13 +82,13 @@ export const local = (() => {
       }
     }
 
-    // Sort the journal entries array by uniqueID
+    // Sort the journal entries array by uniqueID which is created via new Date.now()
     journalEntries.sort((a, b) => parseInt(a.id) - parseInt(b.id))
 
     // Append the sorted journal entries to the journal container
     const journalContainer = document.querySelector(".journal-container")
     journalEntries.forEach(journalEntry => {
-      journalContainer.appendChild(journalEntry)
+      journalContainer.prepend(journalEntry)
     })
   }
 

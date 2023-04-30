@@ -17,52 +17,59 @@
   -ms-user-select: none; /* Internet Explorer and Edge */
 }
 
-body {
-  margin: 0;
-  padding: 0;
+* {
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
 #container {
-  height: 100dvh;
-  display: grid;
-  grid-template-rows: 1.5fr 14.5fr 1fr;
+  display: inline-block;
+  width: 100vw;
+}
+#container > * {
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 #header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 0 30px 0 30px;
+  height: 80px;
   background-color: var(--header-color);
-  color: var(--header-text-color);
+  color: white;
 }
 #body {
   display: grid;
   grid-template-columns: 1fr 8fr;
+  width: 100%;
+  height: calc(100dvh - 80px - 40px);
 }
 #nav {
+  background-color: var(--nav-color);
+  color: white;
   display: flex;
   flex-direction: column;
+  gap: 100px;
   padding-top: 100px;
-  gap: 60px;
-  max-width: 200px;
-  min-width: 150px;
-  background-color: var(--nav-color);
-  color: var(--nav-text-color);
+  min-width: 160px;
 }
 #page {
   background-color: var(--page-color);
-  color: var(--page-text-color);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  color: black;
 }
 #footer {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--header-color);
+  height: 40px;
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
 }
 
 /*=====HEADER STUFF=======*/
@@ -72,10 +79,8 @@ body {
   justify-content: center;
   font-size: 26px;
   padding: 10px;
-  font-family: "Plus Jakarta Sans", sans-serif;
 }
 .user-profile {
-  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 /*=====NAVIGATION MENU=======*/
@@ -103,22 +108,25 @@ body {
   opacity: 1;
 }
 /*=====PAGES=======*/
+#page-content-container {
+  margin-top: 10px;
+  position: relative;
+  background-color: rgb(255, 255, 255, 0.4);
+  border-radius: 10px;
+  padding: 10px;
+  height: calc(100dvh - 250px);
+  overflow-y: auto;
+}
 #page.settings,
 #page.journal,
 #page.reminders,
 #page.about-us {
   padding: 20px 30px 20px 30px;
 }
-#page-content-container {
-  margin-top: 10px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: scroll;
-}
 .page-title {
   color: black;
   font-size: 36px;
+  margin-bottom: 10px;
 }
 /*=====REMINDERS PAGE=======*/
 .reminder-controls-container {
@@ -160,15 +168,14 @@ body {
 #reminderForm {
   display: grid;
   position: absolute;
-  top: 20px;
+  top: 0;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, auto) 1fr;
   gap: 10px;
   background-color: var(--nav-color);
   padding: 10px;
   border-radius: 10px;
-  margin-top: 20px;
-  max-width: 260px;
+  max-width: 270px;
   opacity: 0; /* Initial opacity set to 0 */
   transform: scaleY(0); /* Initial scale set to 0 */
   transition: transform 0.25s ease-in, opacity 0.25s ease-in;
@@ -182,6 +189,9 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+}
+.priority-container > * {
+  display: flex;
 }
 #reminderForm textarea,
 #reminderForm input {
@@ -341,16 +351,17 @@ body {
 
 .journal-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
 }
 .journal-entry {
   display: flex;
   flex-direction: column;
-  background-color: var(--nav-color);
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 10px;
+  max-height: 160px;
+  overflow: hidden;
 }
 
 .journal-text-container {
