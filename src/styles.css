@@ -362,6 +362,23 @@ body {
   border-radius: 10px;
   max-height: 160px;
   overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: left top;
+}
+.journal-expand {
+  max-height: fit-content;
+}
+.journal-entry-absolute {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  background-color: var(--nav-color);
+  max-height: fit-content;
+}
+.journal-entry-wrapper {
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: left top;
 }
 
 .journal-text-container {

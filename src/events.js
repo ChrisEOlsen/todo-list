@@ -218,12 +218,55 @@ export const events = (() => {
     }
 
     //JOURNAL ENTRY CLICKED -EXPAND
+    function wrapJournalEntry(entry) {
+      const wrapper = document.createElement("div")
+      wrapper.className = "journal-entry-wrapper"
+
+      entry.parentNode.insertBefore(wrapper, entry)
+      wrapper.appendChild(entry)
+      return wrapper
+    }
+    function unwrapJournalEntry(wrapper) {
+      const entry = wrapper.querySelector(".journal-entry")
+      wrapper.parentNode.insertBefore(entry, wrapper)
+      wrapper.parentNode.removeChild(wrapper)
+      return entry
+    }
+
+    function getTranslation(target) {
+      const rect = target.getBoundingClientRect()
+      const translateY = window.innerHeight / 2 - rect.top - rect.height / 2
+      const translateX = window.innerWidth / 2 - rect.left - rect.width / 2
+      return { x: translateX, y: translateY }
+    }
+
     if (
       ["journal-entry", "journal-box-entry", "journal-text-container", "journal-box-title"].some(className =>
         utils.hasClassOrParentHasClass(targetElement, className)
       )
     ) {
-      //EXPAND THE ENTRY HERE
+      const targetEntry = targetElement.closest(".journal-entry")
+      let targetWrapper = targetEntry.parentElement
+
+      if (!targetWrapper.classList.contains("journal-entry-wrapper")) {
+        targetWrapper = wrapJournalEntry(targetEntry)
+      }
+
+      const translation = getTranslation(targetWrapper)
+
+      if (targetWrapper.classList.contains("journal-expand")) {
+        targetWrapper.style.transform = ""
+        targetEntry.classList.remove("journal-entry-absolute")
+
+        setTimeout(() => {
+          unwrapJournalEntry(targetWrapper)
+        }, 300)
+      } else {
+        targetWrapper.style.transform = `translate3d(${translation.x}px, ${translation.y}px, 0)`
+        targetWrapper.style.transform += `scale(1.3,1.3)`
+        targetEntry.classList.add("journal-entry-absolute")
+      }
+      targetWrapper.classList.toggle("journal-expand")
     }
   }
 
