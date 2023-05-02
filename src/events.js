@@ -246,7 +246,8 @@ export const events = (() => {
       ["journal-entry", "journal-box-entry", "journal-text-container", "journal-box-title"].some(className =>
         utils.hasClassOrParentHasClass(targetElement, className)
       ) &&
-      targetElement.tagName !== "BUTTON" //deletebutton check
+      targetElement.tagName !== "BUTTON" &&
+      !targetElement.classList.contains("journal-entry-absolute") //deletebutton check
     ) {
       const targetEntry = targetElement.closest(".journal-entry")
       let targetWrapper = targetEntry.parentElement
