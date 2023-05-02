@@ -39,12 +39,13 @@ export const events = (() => {
     const isNewReminderButton = targetElement.classList.contains("add-reminder-button")
     const isNewButtonActive = targetElement.id !== "new-active"
     if (isNewReminderButton && isNewButtonActive) {
+      document.getElementById("page-content-container").scrollTop = "0px"
       const form = utils.createReminderBoxPrompt()
       document.getElementById("page-content-container").appendChild(form)
       setTimeout(() => {
         form.classList.add("animate")
       }, 10)
-      utils.togglePageInputs("reminderForm", true, reminderContainerArr)
+      utils.togglePageInputs("#reminderForm", true, reminderContainerArr)
     }
 
     // REMINDER PROMPT - FORM CONFIRM
@@ -84,7 +85,7 @@ export const events = (() => {
         ? utils.appendReminderByDate(today, reminderDate, reminder)
         : utils.appendReminderByPriority(reminderData.priority, reminder)
 
-      utils.togglePageInputs("reminderForm", false, reminderContainerArr)
+      utils.togglePageInputs("#reminderForm", false, reminderContainerArr)
       targetElement.closest("form").remove()
     }
 
@@ -94,7 +95,7 @@ export const events = (() => {
       targetElement.textContent == "Cancel" &&
       targetElement.closest("form").id === "reminderForm"
     ) {
-      utils.togglePageInputs("reminderForm", false, reminderContainerArr)
+      utils.togglePageInputs("#reminderForm", false, reminderContainerArr)
     }
 
     //REMINDER - CHECKBOX CLICKED
@@ -177,13 +178,14 @@ export const events = (() => {
         utils.hasClassOrParentHasClass(targetElement, className)
       )
     ) {
+      document.getElementById("page-content-container").scrollTop = "0px"
       const journalEntryPrompt = utils.createJournalEntryPrompt()
       document.getElementById("page-content-container").appendChild(journalEntryPrompt)
       setTimeout(() => {
         journalEntryPrompt.classList.add("animate")
       }, 10)
 
-      utils.togglePageInputs("journalEntryForm", true, journalContainerArr)
+      utils.togglePageInputs("#journalEntryForm", true, journalContainerArr)
     }
 
     //JOURNAL FORM CONFIRM
@@ -209,12 +211,12 @@ export const events = (() => {
 
       document.querySelector(".journal-container").prepend(journalEntry)
 
-      utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
+      utils.togglePageInputs("#journalEntryForm", false, journalContainerArr)
       targetElement.closest("form").remove()
     }
     //JOURNAL FORM CANCEL
     if (targetElement.classList.contains("journal-cancel")) {
-      utils.togglePageInputs("journalEntryForm", false, journalContainerArr)
+      utils.togglePageInputs("#journalEntryForm", false, journalContainerArr)
     }
 
     //JOURNAL ENTRY CLICKED -EXPAND
@@ -243,7 +245,8 @@ export const events = (() => {
     if (
       ["journal-entry", "journal-box-entry", "journal-text-container", "journal-box-title"].some(className =>
         utils.hasClassOrParentHasClass(targetElement, className)
-      )
+      ) &&
+      targetElement.tagName !== "BUTTON" //deletebutton check
     ) {
       const targetEntry = targetElement.closest(".journal-entry")
       let targetWrapper = targetEntry.parentElement
@@ -252,21 +255,46 @@ export const events = (() => {
         targetWrapper = wrapJournalEntry(targetEntry)
       }
 
-      const translation = getTranslation(targetWrapper)
+      const translation = getTranslation(targetEntry)
 
       if (targetWrapper.classList.contains("journal-expand")) {
         targetWrapper.style.transform = ""
         targetEntry.classList.remove("journal-entry-absolute")
-
         setTimeout(() => {
           unwrapJournalEntry(targetWrapper)
         }, 300)
+
+        document.getElementById("journalEntryDelete").remove()
       } else {
-        targetWrapper.style.transform = `translate3d(${translation.x}px, ${translation.y}px, 0)`
-        targetWrapper.style.transform += `scale(1.3,1.3)`
         targetEntry.classList.add("journal-entry-absolute")
+        targetWrapper.style.transform = `translate3d(${translation.x}px, ${translation.y - 80}px, 0)`
+        targetWrapper.style.transform += `scale(1.1,1.1)`
+        utils.appendDeleteButton(targetEntry)
       }
       targetWrapper.classList.toggle("journal-expand")
+    }
+    //JOURNAL ENTRY EXPANDED - DELETE BUTTON
+    if (
+      targetElement.id === "journalEntryDelete" ||
+      targetElement.parentNode.id === "journalEntryDelete" ||
+      utils.getAncestorNode(targetElement, 2).id === "journalEntryDelete"
+    ) {
+      let targetEntry = null
+      if (targetElement.classList.contains(".journal-entry")) {
+        targetEntry = targetElement
+      } else {
+        targetEntry = targetElement.closest(".journal-entry")
+      }
+      const uniqueID = targetEntry.id
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key.startsWith(`journal-${uniqueID}`)) {
+          localStorage.removeItem(key)
+        }
+      }
+      document.getElementById("journalEntryDelete").remove()
+      targetEntry.parentNode.remove()
+      targetEntry.remove()
     }
   }
 

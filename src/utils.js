@@ -284,21 +284,22 @@ export const utils = (() => {
     appendReminder("priority", priority, reminder)
   }
 
-  const togglePageInputs = (form_ID, disabled, containerArr) => {
+  const togglePageInputs = (identifier, disabled, containerArr) => {
     containerArr.forEach(c => {
       if (c) c.classList.toggle("dim")
     })
 
-    const form = document.getElementById(form_ID)
+    const item = document.querySelector(identifier)
     const page = document.getElementById(main.PAGE_ID)
 
     if (page) {
-      const inputs = page.querySelectorAll("input, button, textarea, select")
+      const inputs = page.querySelectorAll("input, button, textarea, select, div")
       inputs.forEach(input => {
-        if (!form || !form.contains(input)) input.disabled = disabled
+        if (!item || !item.contains(input)) input.disabled = disabled
       })
     }
   }
+
   function createJournalEntryPrompt() {
     const form = document.createElement("form")
     form.id = "journalEntryForm"
@@ -387,6 +388,15 @@ export const utils = (() => {
     return journalEntryContainer
   }
 
+  const appendDeleteButton = target => {
+    const deleteButtonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9M7 6h10v13H7V6m2 2v9h2V8H9m4 0v9h2V8h-2Z"/></svg>`
+    const button = document.createElement("button")
+    button.innerHTML = deleteButtonSVG
+    button.id = "journalEntryDelete"
+
+    target.appendChild(button)
+  }
+
   //for event handler
   const hasClassOrParentHasClass = (element, className) => {
     return (
@@ -415,5 +425,6 @@ export const utils = (() => {
     createJournalEntryPrompt,
     createJournalEntry,
     hasClassOrParentHasClass,
+    appendDeleteButton,
   }
 })()
